@@ -1,3 +1,3 @@
 # Chapter 1
 
-Howdy, partner. I'm testing the CI through a PR.
+Howdy, partner. Again, I'm testing the CI through a PR.
