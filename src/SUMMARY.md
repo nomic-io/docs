@@ -1,3 +1,3 @@
 # The Nomic Bitcoin Bridge
 
-[Introduction](./introduction.md)
+[The Nomic Bitcoin Bridge](./nomic-bitcoin-bridge.md)
