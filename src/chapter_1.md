@@ -1,3 +1,3 @@
 # Chapter 1
 
-Howdy, partner. Again, I'm testing the CI through a PR.
+Howdy, partner. I'm now ensuring that completion of the Test workflow triggers deployment on the main branch.
