@@ -1,0 +1,6 @@
+[book]
+authors = ["Charlie Little"]
+language = "en"
+multilingual = false
+src = "src"
+title = "Nomic Wiki"
