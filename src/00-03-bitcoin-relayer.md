@@ -7,7 +7,7 @@ Relayer nodes carry data between the Bitcoin blockchain and the Nomic blockchain
 Download Bitcoin Core: [https://bitcoin.org/en/download](https://bitcoin.org/en/download)
 
 Run it with:
-```
+```bash
 # mainnet
 bitcoind -server -rpcuser=satoshi -rpcpassword=nakamoto
 
@@ -19,7 +19,7 @@ bitcoind -server -testnet -rpcuser=satoshi -rpcpassword=nakamoto
 
 ### 2. Run the relayer process
 
-```
+```bash
 # mainnet
 nomic relayer --rpc-port=8332 --rpc-user=satoshi --rpc-pass=nakamoto
 

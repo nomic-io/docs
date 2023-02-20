@@ -12,7 +12,7 @@ Ask the community for some coins in the [Discord](https://discord.gg/jH7U2NRJKn)
 Once you have received coins, you can declare your node as a validator and
 delegate to yourself with this command:
 
-```
+```bash
 nomic declare \
   <validator_consensus_key> \
   <amount> \
@@ -37,7 +37,7 @@ declare a new validator instead.
 
 For example:
 
-```
+```bash
 nomic declare \
   ohFOw5u9LGq1ZRMTYZD1Y/WrFtg7xfyBaEB4lSgfeC8= \
   100000 \
@@ -56,7 +56,7 @@ nomic declare \
 The funds in the Bitcoin bridge are held in a large multisig controlled by the Nomic validators. If you are a validator with a significant amount of voting power, it is very important that you run a signer.
 
 You can run the signer with:
-```
+```bash
 nomic signer
 ```
 
