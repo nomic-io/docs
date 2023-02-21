@@ -25,7 +25,7 @@ cargo install --path . --locked --features compat
 
 ```bash
 # (make sure to kill your existing testnet node first)
-nomic start --network testnet
+nomic start --network testnet --legacy-version 4.1.3
 ```
 
 Your node will automatically perform the upgrade on *Thursday, February 23 at 18:00 UTC*.
