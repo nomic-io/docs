@@ -11,5 +11,5 @@ git pull
 cargo install --path . --locked
 
 # (make sure to kill your existing node first)
-nomic start --network testnet --legacy-version 4.1.3
+nomic start
 ```
