@@ -1,0 +1,68 @@
+# IBC Relayer
+
+Running an IBC relayer for Nomic works mostly the same as with other Cosmos
+chains, but with a few caveats:
+
+1. Currently, Nomic is only compatible with
+   [Hermes](https://hermes.informal.systems) and does not support the ibc-go relayer.
+2. Hermes must be configured with a custom proof spec. Please see the example
+   configuration below.
+
+Fees for IBC transactions are paid with nBTC (1 sat per tx).
+
+Here's an example Hermes configuration relaying between a local Nomic and
+Osmosis node:
+
+```toml
+# ~/.hermes/config.toml
+
+[[chains]]
+id = 'nomic-stakenet-3'
+rpc_addr = 'http://127.0.0.1:26657'
+grpc_addr = 'http://127.0.0.1:9001'
+event_source = { mode = 'poll'}
+rpc_timeout = '10s'
+account_prefix = 'nomic'
+key_name = 'nomic'
+store_prefix = 'ibc'
+default_gas = 2000000
+max_gas = 10000000
+gas_price = { price = 0.001, denom = 'usat' }
+clock_drift = '10s'
+trusting_period = '10days'
+trust_threshold = { numerator = '1', denominator = '3' }
+[chains.packet_filter]
+policy = 'allow'
+list = [
+   ['transfer', 'channel-0'], # osmosis-1
+]
+
+[[chains]]
+id = 'osmosis-1'
+rpc_addr = 'http://127.0.0.1:26757'
+grpc_addr = 'http://127.0.0.1:9090'
+websocket_addr = 'ws://127.0.0.1:26757/websocket'
+rpc_timeout = '10s'
+account_prefix = 'osmo'
+key_name = 'osmosis'
+address_type = { derivation = 'cosmos' }
+store_prefix = 'ibc'
+default_gas = 5000000
+max_gas = 15000000
+gas_price = { price = 0.0026, denom = 'uosmo' }
+gas_multiplier = 1.1
+max_msg_num = 20
+max_tx_size = 209715
+clock_drift = '20s'
+max_block_time = '10s'
+trusting_period = '10days'
+trust_threshold = { numerator = '1', denominator = '3' }
+[chains.packet_filter]
+policy = 'allow'
+list = [
+  ['transfer', 'channel-5555'], # nomic-stakenet-3
+]
+```
+
+Please refer to the [Hermes docs](https://hermes.informal.systems) for more
+information.
