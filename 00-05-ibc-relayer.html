@@ -1,0 +1,312 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>IBC Relayer - The Nomic Network</title>
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="intro.html"><strong aria-hidden="true">1.</strong> Nomic</a></li><li class="chapter-item expanded "><a href="00-node.html"><strong aria-hidden="true">2.</strong> Running a Node</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="00-00-setup.html"><strong aria-hidden="true">2.1.</strong> Setup</a></li><li class="chapter-item expanded "><a href="00-01-upgrading.html"><strong aria-hidden="true">2.2.</strong> Upgrading</a></li><li class="chapter-item expanded "><a href="00-02-validating.html"><strong aria-hidden="true">2.3.</strong> Validating</a></li><li class="chapter-item expanded "><a href="00-03-bitcoin-relayer.html"><strong aria-hidden="true">2.4.</strong> Bitcoin Relayer</a></li><li class="chapter-item expanded "><a href="00-04-bitcoin-signer.html"><strong aria-hidden="true">2.5.</strong> Bitcoin Signer</a></li><li class="chapter-item expanded "><a href="00-05-ibc-relayer.html" class="active"><strong aria-hidden="true">2.6.</strong> IBC Relayer</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">The Nomic Network</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="ibc-relayer"><a class="header" href="#ibc-relayer">IBC Relayer</a></h1>
+<p>Running an IBC relayer for Nomic works mostly the same as with other Cosmos
+chains, but with a few caveats:</p>
+<ol>
+<li>Currently, Nomic is only compatible with
+<a href="https://hermes.informal.systems">Hermes</a> and does not support the ibc-go
+relayer.</li>
+<li>Hermes must be configured with a custom proof spec. Please see the example
+configuration below.</li>
+</ol>
+<h2 id="1-configure-hermes"><a class="header" href="#1-configure-hermes">1. Configure Hermes</a></h2>
+<p>Here's an example Hermes configuration relaying between a local Nomic and
+Osmosis node:</p>
+<pre><code class="language-toml"># ~/.hermes/config.toml
+
+[[chains]]
+id = 'nomic-stakenet-3'
+rpc_addr = 'http://127.0.0.1:26657'
+event_source = { mode = 'pull' }
+grpc_addr = 'http://127.0.0.1:9001'
+rpc_timeout = '10s'
+account_prefix = 'nomic'
+key_name = 'testkey'
+store_prefix = 'ibc'
+max_gas = 40000000
+gas_price = { price = 0.001, denom = 'stake' }
+clock_drift = '20s'
+proof_specs = '''
+[
+  {
+    &quot;inner_spec&quot;: {
+      &quot;child_order&quot;: [
+        0,
+        1,
+        2
+      ],
+      &quot;child_size&quot;: 32,
+      &quot;empty_child&quot;: &quot;AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA&quot;,
+      &quot;min_prefix_length&quot;: 1,
+      &quot;max_prefix_length&quot;: 1,
+      &quot;hash&quot;: 6
+    },
+    &quot;leaf_spec&quot;: {
+      &quot;hash&quot;: 6,
+      &quot;prehash_key&quot;: 0,
+      &quot;prehash_value&quot;: 0,
+      &quot;length&quot;: 4,
+      &quot;prefix&quot;: &quot;AA&quot;
+    },
+    &quot;max_depth&quot;: 0,
+    &quot;min_depth&quot;: 0
+  },
+  {
+    &quot;inner_spec&quot;: {
+      &quot;child_order&quot;: [
+        0
+      ],
+      &quot;child_size&quot;: 32,
+      &quot;empty_child&quot;: &quot;&quot;,
+      &quot;min_prefix_length&quot;: 0,
+      &quot;max_prefix_length&quot;: 0,
+      &quot;hash&quot;: 6
+    },
+    &quot;leaf_spec&quot;: {
+      &quot;hash&quot;: 6,
+      &quot;prehash_key&quot;: 0,
+      &quot;prehash_value&quot;: 0,
+      &quot;length&quot;: 0,
+      &quot;prefix&quot;: &quot;&quot;
+    },
+    &quot;max_depth&quot;: 0,
+    &quot;min_depth&quot;: 0
+  }
+]
+'''
+
+[[chains]]
+id = 'osmosis-1'
+rpc_addr = 'http://127.0.0.1:26757'
+grpc_addr = 'http://127.0.0.1:9090'
+websocket_addr = 'ws://127.0.0.1:26757/websocket'
+rpc_timeout = '10s'
+account_prefix = 'osmo'
+key_name = 'osmosis'
+address_type = { derivation = 'cosmos' }
+store_prefix = 'ibc'
+default_gas = 5000000
+max_gas = 15000000
+gas_price = { price = 0.0026, denom = 'uosmo' }
+gas_multiplier = 1.1
+max_msg_num = 20
+max_tx_size = 209715
+clock_drift = '20s'
+max_block_time = '10s'
+trusting_period = '10days'
+trust_threshold = { numerator = '1', denominator = '3' }
+[chains.packet_filter]
+policy = 'allow'
+list = [
+  ['transfer', 'channel-5555'], # nomic-stakenet-3
+]
+</code></pre>
+<p>The <code>proof_specs</code> and <code>event_source</code> fields for Nomic are the main differences
+to note for those otherwise familiar with IBC relaying with Hermes.</p>
+<p>Please refer to the <a href="https://hermes.informal.systems">Hermes docs</a> for more
+information.</p>
+<h2 id="2-run-grpc-server"><a class="header" href="#2-run-grpc-server">2. Run gRPC server</a></h2>
+<p>Nomic features a gRPC server to support IBC relaying, which implements only the
+minimum set of gRPC methods required by Hermes. The server does not run by
+default, and must be run in a separate process with:</p>
+<pre><code class="language-bash"># default port 9001
+nomic grpc
+</code></pre>
+<p>or:</p>
+<pre><code class="language-bash">nomic grpc &lt;PORT&gt;
+</code></pre>
+<h2 id="3-fund-relayer-with-nbtc"><a class="header" href="#3-fund-relayer-with-nbtc">3. Fund relayer with NBTC</a></h2>
+<p>Fees for IBC transactions are paid with NBTC (1 sat per tx). After you've
+configured your relayer, you'll need to fund its Nomic account (<code>hermes keys list --chain nomic-stakenet-3</code> to see the address) with NBTC.</p>
+<h2 id="4-optional-relay-operator-keys"><a class="header" href="#4-optional-relay-operator-keys">4. (Optional) Relay operator keys</a></h2>
+<p>To ensure that NBTC is recoverable by the remote chain's validator set in the
+event of an Emergency Disbursal, run:</p>
+<pre><code class="language-bash">nomic relay-op-keys &lt;COUNTERPARTY-RPC&gt; &lt;CLIENT_ID&gt;
+</code></pre>
+<p>This command may be re-run anytime to refresh the operator keys of the
+remote chain's validator set. If an Emergency Disbursal occurs on Nomic, a
+portion of the Bitcoin reserves equal to the NBTC held in channels backed by the
+specified client will become spendable by 2/3+ of the voting power of that network's top 30 validators.</p>
+<h2 id="other-notes"><a class="header" href="#other-notes">Other notes</a></h2>
+<p>Below are a couple other notes to keep in mind, given Nomic's custom IBC implementation.</p>
+<h3 id="channel-ports"><a class="header" href="#channel-ports">Channel ports</a></h3>
+<p>For channels supporting token transfers, the Nomic channel port <strong>must</strong>
+be <code>transfer</code>. ICS 20 is the only application-layer standard currently
+supported by Nomic:</p>
+<pre><code class="language-bash">hermes create channel --a-chain osmosis-1  --b-chain nomic-stakenet-3 --a-port transfer --b-port transfer --new-client-connection
+</code></pre>
+<h3 id="manual-clearing"><a class="header" href="#manual-clearing">Manual clearing</a></h3>
+<p>Typically, the main Hermes process (<code>hermes start</code>) will properly relay packets
+between Nomic and its counterparty. However, if it seems like an event has been
+missed by Hermes, packets can be manually cleared (bidirectionally) with:</p>
+<pre><code class="language-bash">hermes clear packets --chain nomic-stakenet-3 --port transfer --channel channel-1
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="00-04-bitcoin-signer.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="00-04-bitcoin-signer.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+    </body>
+</html>

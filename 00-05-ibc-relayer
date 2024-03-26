@@ -1,0 +1,173 @@
+# IBC Relayer
+
+Running an IBC relayer for Nomic works mostly the same as with other Cosmos
+chains, but with a few caveats:
+
+1. Currently, Nomic is only compatible with
+   [Hermes](https://hermes.informal.systems) and does not support the ibc-go
+   relayer.
+2. Hermes must be configured with a custom proof spec. Please see the example
+   configuration below.
+
+## 1. Configure Hermes
+
+Here's an example Hermes configuration relaying between a local Nomic and
+Osmosis node:
+
+```toml
+# ~/.hermes/config.toml
+
+[[chains]]
+id = 'nomic-stakenet-3'
+rpc_addr = 'http://127.0.0.1:26657'
+event_source = { mode = 'pull' }
+grpc_addr = 'http://127.0.0.1:9001'
+rpc_timeout = '10s'
+account_prefix = 'nomic'
+key_name = 'testkey'
+store_prefix = 'ibc'
+max_gas = 40000000
+gas_price = { price = 0.001, denom = 'stake' }
+clock_drift = '20s'
+proof_specs = '''
+[
+  {
+    "inner_spec": {
+      "child_order": [
+        0,
+        1,
+        2
+      ],
+      "child_size": 32,
+      "empty_child": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+      "min_prefix_length": 1,
+      "max_prefix_length": 1,
+      "hash": 6
+    },
+    "leaf_spec": {
+      "hash": 6,
+      "prehash_key": 0,
+      "prehash_value": 0,
+      "length": 4,
+      "prefix": "AA"
+    },
+    "max_depth": 0,
+    "min_depth": 0
+  },
+  {
+    "inner_spec": {
+      "child_order": [
+        0
+      ],
+      "child_size": 32,
+      "empty_child": "",
+      "min_prefix_length": 0,
+      "max_prefix_length": 0,
+      "hash": 6
+    },
+    "leaf_spec": {
+      "hash": 6,
+      "prehash_key": 0,
+      "prehash_value": 0,
+      "length": 0,
+      "prefix": ""
+    },
+    "max_depth": 0,
+    "min_depth": 0
+  }
+]
+'''
+
+[[chains]]
+id = 'osmosis-1'
+rpc_addr = 'http://127.0.0.1:26757'
+grpc_addr = 'http://127.0.0.1:9090'
+websocket_addr = 'ws://127.0.0.1:26757/websocket'
+rpc_timeout = '10s'
+account_prefix = 'osmo'
+key_name = 'osmosis'
+address_type = { derivation = 'cosmos' }
+store_prefix = 'ibc'
+default_gas = 5000000
+max_gas = 15000000
+gas_price = { price = 0.0026, denom = 'uosmo' }
+gas_multiplier = 1.1
+max_msg_num = 20
+max_tx_size = 209715
+clock_drift = '20s'
+max_block_time = '10s'
+trusting_period = '10days'
+trust_threshold = { numerator = '1', denominator = '3' }
+[chains.packet_filter]
+policy = 'allow'
+list = [
+  ['transfer', 'channel-5555'], # nomic-stakenet-3
+]
+```
+
+The `proof_specs` and `event_source` fields for Nomic are the main differences
+to note for those otherwise familiar with IBC relaying with Hermes.
+
+Please refer to the [Hermes docs](https://hermes.informal.systems) for more
+information.
+
+## 2. Run gRPC server
+
+Nomic features a gRPC server to support IBC relaying, which implements only the
+minimum set of gRPC methods required by Hermes. The server does not run by
+default, and must be run in a separate process with:
+
+```bash
+# default port 9001
+nomic grpc
+```
+
+or:
+
+```bash
+nomic grpc <PORT>
+```
+
+## 3. Fund relayer with NBTC
+
+Fees for IBC transactions are paid with NBTC (1 sat per tx). After you've
+configured your relayer, you'll need to fund its Nomic account (`hermes keys
+list --chain nomic-stakenet-3` to see the address) with NBTC.
+
+## 4. (Optional) Relay operator keys
+
+To ensure that NBTC is recoverable by the remote chain's validator set in the
+event of an Emergency Disbursal, run:
+
+```bash
+nomic relay-op-keys <COUNTERPARTY-RPC> <CLIENT_ID>
+```
+
+This command may be re-run anytime to refresh the operator keys of the
+remote chain's validator set. If an Emergency Disbursal occurs on Nomic, a
+portion of the Bitcoin reserves equal to the NBTC held in channels backed by the
+specified client will become spendable by 2/3+ of the voting power of that network's top 30 validators.
+
+## Other notes
+
+Below are a couple other notes to keep in mind, given Nomic's custom IBC implementation.
+
+### Channel ports
+
+For channels supporting token transfers, the Nomic channel port **must**
+be `transfer`. ICS 20 is the only application-layer standard currently
+supported by Nomic:
+
+```bash
+hermes create channel --a-chain osmosis-1  --b-chain nomic-stakenet-3 --a-port transfer --b-port transfer --new-client-connection
+```
+
+### Manual clearing
+
+Typically, the main Hermes process (`hermes start`) will properly relay packets
+between Nomic and its counterparty. However, if it seems like an event has been
+missed by Hermes, packets can be manually cleared (bidirectionally) with:
+
+```bash
+hermes clear packets --chain nomic-stakenet-3 --port transfer --channel channel-1
+```
