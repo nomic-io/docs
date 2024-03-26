@@ -134,6 +134,20 @@ Fees for IBC transactions are paid with NBTC (1 sat per tx). After you've
 configured your relayer, you'll need to fund its Nomic account (`hermes keys
 list --chain nomic-stakenet-3` to see the address) with NBTC.
 
+## 4. (Optional) Relay operator keys
+
+To ensure that NBTC is recoverable by the remote chain's validator set in the
+event of an Emergency Disbursal, run:
+
+```bash
+nomic relay-op-keys <COUNTERPARTY-RPC> <CLIENT_ID>
+```
+
+This command may be re-run anytime to refresh the operator keys of the
+remote chain's validator set. If an Emergency Disbursal occurs on Nomic, a
+portion of the Bitcoin reserves equal to the NBTC held in channels backed by the
+specified client will become spendable by 2/3+ of the voting power of that network's top 30 validators.
+
 ## Other notes
 
 Below are a couple other notes to keep in mind, given Nomic's custom IBC implementation.
